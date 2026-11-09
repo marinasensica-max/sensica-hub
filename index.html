@@ -1,0 +1,1029 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Sensica market hub</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗺️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#F1EBE3; --surface:#FBF8F4; --surface-2:#F5EEE6; --ink:#2D1A26; --muted:#75616B; --line:#E0D3C7;
+  --terra:#A3573A; --terra-ink:#FFFFFF; --blush:#EECFC5; --blush-ink:#5B2E2A; --plum:#4A2A3D; --plum-ink:#FBF4F7;
+  --danger:#A3352B; --ok:#4E6B44; --shadow:0 1px 0 rgba(74,42,61,.06);
+  --serif:'Fraunces','Iowan Old Style','Palatino Linotype',Georgia,serif;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#1B1217; --surface:#261A21; --surface-2:#2E2028; --ink:#F3E9E3; --muted:#B6A2AB; --line:#3D2B35;
+    --terra:#DE8E70; --terra-ink:#2A120A; --blush:#563840; --blush-ink:#F6DDD5; --plum:#E2C3D4; --plum-ink:#2A1622;
+    --danger:#EE8A7E; --ok:#9BBE8C; --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#1B1217; --surface:#261A21; --surface-2:#2E2028; --ink:#F3E9E3; --muted:#B6A2AB; --line:#3D2B35;
+  --terra:#DE8E70; --terra-ink:#2A120A; --blush:#563840; --blush-ink:#F6DDD5; --plum:#E2C3D4; --plum-ink:#2A1622;
+  --danger:#EE8A7E; --ok:#9BBE8C; --shadow:none;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+img{max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--terra);outline-offset:2px;border-radius:6px}
+
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top-inner{max-width:1200px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:10px;margin-right:auto}
+.brand b{font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:.01em;color:var(--plum)}
+.brand span{color:var(--muted);font-size:14px}
+nav.tabs{display:flex;gap:4px;overflow-x:auto}
+nav.tabs a{padding:7px 14px;border-radius:999px;text-decoration:none;color:var(--muted);font-weight:500;white-space:nowrap}
+nav.tabs a:hover{color:var(--ink)}
+nav.tabs a[aria-current="page"]{background:var(--plum);color:var(--plum-ink)}
+
+main{max-width:1200px;margin:0 auto;padding:28px 20px 80px}
+.banner{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:22px;color:var(--muted);font-size:14px}
+.empty{color:var(--muted);padding:18px 0}
+
+h1,h2,h3{font-family:var(--serif);font-weight:500;margin:0;line-height:1.15}
+h1{font-size:clamp(30px,5vw,46px);color:var(--plum);letter-spacing:-.01em}
+h2{font-size:22px}
+h3{font-size:18px}
+.lede{color:var(--muted);margin:10px 0 0;max-width:62ch}
+
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 13px;font-weight:500}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--terra);color:var(--terra-ink);border-color:var(--terra)}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--muted)}
+.btn.ghost:hover{color:var(--ink)}
+.btn.danger{color:var(--danger);background:transparent}
+.btn.small{padding:4px 10px;font-size:13px}
+.icon-btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;width:34px;height:34px;display:inline-grid;place-items:center}
+
+.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:22px 0 18px}
+.toolbar .grow{flex:1}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{border:1px solid var(--line);background:transparent;border-radius:999px;padding:4px 12px 4px 10px;font-size:13px;display:inline-flex;align-items:center;gap:7px;color:var(--muted)}
+.pill[aria-pressed="true"]{background:var(--surface);color:var(--ink);border-color:var(--ink)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--mc,var(--muted));flex:none}
+
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 8px;white-space:nowrap}
+.tag.shared{color:var(--ok);border-color:currentColor}
+.status{font-size:12px;border-radius:999px;padding:1px 9px;white-space:nowrap;background:var(--surface-2);color:var(--muted)}
+.status.s-Drafting,.status.s-In-talks,.status.s-Onboarding{background:var(--blush);color:var(--blush-ink)}
+.status.s-Ready,.status.s-Prospect{background:transparent;border:1px solid var(--terra);color:var(--terra)}
+.status.s-Scheduled,.status.s-Active{background:var(--plum);color:var(--plum-ink)}
+.status.s-Posted{background:transparent;border:1px solid var(--ok);color:var(--ok)}
+
+/* overview */
+.ov-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;margin-top:30px}
+@media (max-width:860px){.ov-grid{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow)}
+.panel h2{margin-bottom:12px}
+.row{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.row .when{width:58px;flex:none;color:var(--muted);font-size:13px;padding-top:2px}
+.row .when.overdue{color:var(--danger);font-weight:600}
+.row .what{flex:1;min-width:0}
+.row .what button.link{all:unset;cursor:pointer;font-weight:500}
+.row .what button.link:hover{text-decoration:underline}
+.row .meta{color:var(--muted);font-size:13px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:2px}
+.glance{margin-top:28px}
+.glance-table{width:100%;border-collapse:collapse}
+.glance-wrap{overflow-x:auto}
+.glance-table th{text-align:left;font-weight:500;color:var(--muted);font-size:13px;padding:8px 10px;border-bottom:1px solid var(--line)}
+.glance-table td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.glance-table td.pos{font-family:var(--serif);font-size:15px;line-height:1.5;max-width:46ch}
+.glance-table td.pos.none{font-family:var(--sans);color:var(--muted);font-size:14px}
+.glance-table .mname{display:flex;align-items:center;gap:8px;font-weight:600;white-space:nowrap}
+
+/* calendar */
+.cal-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cal-head h1{min-width:9ch}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line);background:var(--surface);border-radius:12px;overflow:hidden}
+.cal .dow{padding:8px 10px;font-size:13px;color:var(--muted);border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface-2)}
+.cell{min-height:118px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px;display:flex;flex-direction:column;gap:4px;position:relative}
+.cell.out{background:var(--surface-2)}
+.cell.out .num{opacity:.45}
+.cell .num{font-size:13px;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.cell.today .num b{background:var(--terra);color:var(--terra-ink);border-radius:999px;padding:0 7px}
+.cell .num b{font-weight:500}
+.cell .add{opacity:0;border:0;background:transparent;color:var(--muted);font-size:17px;line-height:1;padding:0 4px;border-radius:4px}
+.cell:hover .add,.cell .add:focus-visible{opacity:1}
+.chip{all:unset;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:12.5px;line-height:1.3;padding:3px 6px;border-radius:6px;background:var(--surface-2);border-left:3px solid var(--mc);overflow:hidden}
+.chip span.t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip.posted span.t{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
+.chip:hover{background:var(--blush);color:var(--blush-ink)}
+.more{font-size:12px;color:var(--muted);padding-left:6px}
+.agenda{display:none}
+@media (max-width:720px){.cal{display:none}.agenda{display:block}}
+.agenda .day{margin-top:18px}
+.agenda .day h3{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.agenda .item{all:unset;box-sizing:border-box;cursor:pointer;display:block;width:100%;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--mc);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.agenda .item .meta{color:var(--muted);font-size:13px;display:flex;gap:8px;flex-wrap:wrap;margin-top:3px}
+
+/* markets */
+.brand-card{margin-top:26px;background:var(--plum);color:var(--plum-ink);border-radius:16px;padding:24px 26px}
+.brand-card .bc-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.brand-card .bc-head h2{margin-right:auto;font-size:20px}
+.brand-card .core{font-family:var(--serif);font-size:clamp(22px,3vw,30px);line-height:1.25;max-width:34ch;margin:0 0 18px}
+.brand-card dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px 26px;margin:0}
+.brand-card dt{font-size:13px;opacity:.72;margin-bottom:2px}
+.brand-card dd{margin:0;white-space:pre-line}
+.brand-card .btn{background:transparent;color:inherit;border-color:currentColor;opacity:.9}
+.mk-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,520px),1fr));gap:22px;margin-top:24px}
+.mk{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px;box-shadow:var(--shadow);border-top:4px solid var(--mc)}
+.mk-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mk-head h2{margin-right:auto}
+.mk .statement{font-family:var(--serif);font-size:19px;line-height:1.45;margin:14px 0 6px}
+.mk .statement.none{font-family:var(--sans);font-size:14px;color:var(--muted)}
+.mk h3{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--terra);margin:18px 0 8px}
+.mk dl{display:grid;grid-template-columns:140px 1fr;gap:6px 14px;margin:0;font-size:14px}
+@media (max-width:480px){.mk dl{grid-template-columns:1fr}.mk dd{margin-bottom:6px}}
+.mk dt{color:var(--muted)}
+.mk dd{margin:0;white-space:pre-line}
+.mk dd.none{color:var(--muted)}
+
+/* distributors */
+.dist{display:grid;grid-template-columns:320px 1fr;gap:22px;align-items:start}
+@media (max-width:820px){.dist{grid-template-columns:1fr}}
+.d-list{display:flex;flex-direction:column;gap:8px}
+.d-item{all:unset;box-sizing:border-box;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:block}
+.d-item[aria-current="true"]{border-color:var(--plum);box-shadow:inset 3px 0 0 var(--plum)}
+.d-item .n{font-weight:600;display:flex;align-items:center;gap:8px;justify-content:space-between}
+.d-item .meta{color:var(--muted);font-size:13px;margin-top:4px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.d-detail{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+.d-detail .dh{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.d-detail .dh h2{margin-right:auto;font-size:26px}
+.d-detail dl{display:grid;grid-template-columns:150px 1fr;gap:6px 14px;margin:16px 0 0;font-size:14px}
+@media (max-width:480px){.d-detail dl{grid-template-columns:1fr}}
+.d-detail dt{color:var(--muted)}
+.d-detail dd{margin:0;white-space:pre-line}
+.next{margin-top:18px;background:var(--surface-2);border-radius:10px;padding:12px 14px;display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.next b{font-weight:600}
+.next .when{color:var(--muted);font-size:13px}
+.next .when.overdue{color:var(--danger);font-weight:600}
+.timeline{margin-top:24px}
+.timeline .th{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.timeline .th h3{margin-right:auto}
+.ev{display:grid;grid-template-columns:76px 1fr;gap:14px;padding:12px 0;border-top:1px solid var(--line)}
+.ev .d{color:var(--muted);font-size:13px;padding-top:2px}
+.ev .body{min-width:0}
+.ev .body .top-line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ev .body .ty{font-weight:600;font-size:14px}
+.ev .body p{margin:4px 0 0;white-space:pre-line}
+.ev .fu{margin-top:6px;font-size:13px;color:var(--muted)}
+.ev .fu.open{color:var(--terra)}
+.ev .fu.overdue{color:var(--danger);font-weight:600}
+.ev .edit{all:unset;cursor:pointer;color:var(--muted);font-size:13px;margin-left:auto}
+.ev .edit:hover{color:var(--ink);text-decoration:underline}
+
+/* dialog */
+dialog{border:0;padding:0;border-radius:16px;background:var(--surface);color:var(--ink);width:min(720px,calc(100vw - 24px));max-height:calc(100vh - 40px);box-shadow:0 20px 60px rgba(30,10,20,.3)}
+dialog::backdrop{background:rgba(40,20,30,.42)}
+.dlg-head{position:sticky;top:0;background:var(--surface);padding:18px 22px 12px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;z-index:1}
+.dlg-head h2{margin-right:auto}
+.dlg-body{padding:16px 22px 8px}
+.dlg-body fieldset{border:0;padding:0;margin:0 0 18px}
+.dlg-body legend{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--terra);margin-bottom:8px;padding:0}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px}
+@media (max-width:560px){.fields{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:4px}
+.field.wide{grid-column:1/-1}
+.field label{font-size:13px;color:var(--muted);font-weight:500}
+.field small{font-size:12px;color:var(--muted);margin-top:-2px}
+.field input,.field select,.field textarea{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px 10px;width:100%}
+.field textarea{resize:vertical;min-height:64px;line-height:1.45}
+.field input:disabled,.field select:disabled,.field textarea:disabled{opacity:1;background:var(--surface-2);color:var(--ink)}
+.check{display:flex;gap:8px;align-items:center;font-size:14px}
+.share-row{display:flex;gap:12px;align-items:center;justify-content:space-between;background:var(--surface-2);border-radius:10px;padding:12px 14px;margin:4px 0 14px}
+.share-row .txt b{display:block;font-weight:600;font-size:14px}
+.share-row .txt span{font-size:13px;color:var(--muted)}
+.switch{position:relative;width:44px;height:26px;flex:none}
+.switch input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.switch .track{position:absolute;inset:0;border-radius:999px;background:var(--line);transition:background .15s}
+.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--surface);transition:transform .15s}
+.switch input:checked + .track{background:var(--ok)}
+.switch input:checked + .track::after{transform:translateX(18px)}
+.switch input:focus-visible + .track{outline:2px solid var(--terra);outline-offset:2px}
+.dlg-foot{position:sticky;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:12px 22px;display:flex;gap:8px;align-items:center}
+.dlg-foot .grow{flex:1}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--plum);color:var(--plum-ink);padding:10px 16px;border-radius:10px;font-size:14px;z-index:20;max-width:calc(100vw - 32px);opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.on{opacity:1}
+.sync{font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<style>
+.account{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+.account .who{max-width:22ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gate{max-width:520px;margin:12vh auto 0;text-align:left}
+.gate h1{margin-bottom:12px}
+.gate p{color:var(--muted);margin:0 0 22px}
+.gate code{background:var(--surface-2);padding:1px 6px;border-radius:5px;font-size:13px}
+.tag.people{color:var(--ok);border-color:currentColor}
+.preview-bar{background:var(--plum);color:var(--plum-ink);border-radius:10px;padding:10px 14px;margin-bottom:22px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.preview-bar span{flex:1;min-width:200px}
+.preview-bar .btn{background:transparent;color:inherit;border-color:currentColor}
+.who-box{background:var(--surface-2);border-radius:10px;padding:12px 14px;margin:4px 0 16px}
+.who-box .wb-head{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
+.who-box .wb-head b{font-weight:600;font-size:14px;margin-right:auto}
+.who-box .wb-head span{font-size:13px;color:var(--muted)}
+.who-group{margin-top:8px}
+.who-group .gname{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
+.who-people{display:flex;flex-wrap:wrap;gap:6px 16px;margin:6px 0 0 24px}
+.who-people label{display:flex;gap:6px;align-items:center;font-size:14px}
+.who-people small{color:var(--muted)}
+.apply-row{margin-top:10px;font-size:13px}
+.people-table{width:100%;border-collapse:collapse;margin-top:8px}
+.people-table th{text-align:left;font-weight:500;color:var(--muted);font-size:13px;padding:8px 10px;border-bottom:1px solid var(--line)}
+.people-table td{padding:10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.people-table td.actions{white-space:nowrap;text-align:right}
+.add-person{display:grid;grid-template-columns:1fr 1.3fr 1fr auto;gap:10px;align-items:end;margin-top:16px}
+@media (max-width:720px){.add-person{grid-template-columns:1fr}}
+.add-person .field input,.add-person .field select{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px 10px;width:100%}
+.data-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.data-tools p{flex-basis:100%;margin:0 0 4px;color:var(--muted);font-size:14px}
+.sharing-grid{display:grid;gap:24px;margin-top:26px}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="brand"><b>Sensica</b><span>Market hub</span></div>
+    <nav class="tabs" aria-label="Sections">
+      <a href="#overview" data-view="overview">Overview</a>
+      <a href="#calendar" data-view="calendar">Calendar</a>
+      <a href="#markets" data-view="markets">Markets</a>
+      <a href="#distributors" data-view="distributors">Distributors</a>
+      <a href="#sharing" data-view="sharing" hidden>Sharing</a>
+    </nav>
+    <div class="account" id="account"></div>
+  </div>
+</header>
+<main id="main" aria-live="polite"></main>
+<dialog id="dlg"><form id="dlgForm" novalidate></form></dialog>
+<div class="toast" id="toast" role="status"></div>
+<script type="module">
+/* =========================================================
+   1. PASTE YOUR FIREBASE CONFIG HERE (see README, step 2)
+   ========================================================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyCuLqCZwXMoe3cDRfjZeOF1gMSM0Ft4_MI",
+  authDomain: "sensica-hub.firebaseapp.com",
+  projectId: "sensica-hub",
+  storageBucket: "sensica-hub.firebasestorage.app",
+  messagingSenderId: "165910467655",
+  appId: "1:165910467655:web:c81a23c285880ae0900d62"
+};
+/* ========================================================= */
+
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, query, where, writeBatch } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+const MARKET_COLORS = ['#B5694A','#7B4A66','#C98A84','#6F8059','#4F6D88','#A8853F','#62598A','#8E5A4A'];
+const POST_FORMATS = ['Reel','Carousel','Story','Static post','TikTok','YouTube Short','Live','Other'];
+const POST_STATUS = ['Idea','Drafting','Ready','Scheduled','Posted'];
+const DIST_STATUS = ['Prospect','In talks','Onboarding','Active','Paused','Ended'];
+const ACT_TYPES = ['Meeting','Call','Materials sent','Order','Campaign','Event','Report received','Note'];
+const PRODUCTS = ['Sensifirm','Sensifirm Pro','Multi RF','Sensilift','Sensilight Pro','Sensilight Mini','Sensilight ICE','SensiSmooth','Brand','Other'];
+const VIEWS = ['overview','calendar','markets','distributors','sharing'];
+
+const marketOptions = () => markets().map(m => ({value:m.id,label:m.name}));
+const distOptions = () => ofKind('distributor').map(d => ({value:d.id,label:d.name}));
+
+const SPECS = {
+  brand: { title:'Brand foundation', sections:[
+    {legend:'Applies to every market', fields:[
+      {key:'positioning',label:'Core positioning',type:'textarea',wide:true,rows:2},
+      {key:'proof',label:'Credentials and proof',type:'textarea',wide:true},
+      {key:'voice',label:'Voice and tone',type:'textarea',wide:true},
+      {key:'copyRules',label:'Copy rules',type:'textarea',wide:true},
+      {key:'visual',label:'Visual identity',type:'textarea',wide:true},
+    ]}]},
+  market: { title:'Market', sections:[
+    {legend:'Market', fields:[
+      {key:'name',label:'Market name',required:true},
+      {key:'channels',label:'Where we sell',type:'textarea',rows:2},
+      {key:'focus',label:'Current focus',type:'textarea',wide:true,rows:2},
+    ]},
+    {legend:'Brand positioning', fields:[
+      {key:'positioning',label:'Positioning statement',type:'textarea',wide:true,hint:'How Sensica should be understood in this market, in one or two sentences.'},
+      {key:'audience',label:'Core audience',type:'textarea'},
+      {key:'pricePosition',label:'Price position',type:'textarea'},
+      {key:'heroProducts',label:'Hero products',type:'textarea'},
+      {key:'proofPoints',label:'Proof points',type:'textarea'},
+      {key:'tone',label:'Tone and language',type:'textarea'},
+      {key:'competitors',label:'Competitors',type:'textarea'},
+    ]},
+    {legend:'Social strategy', fields:[
+      {key:'accounts',label:'Social accounts',type:'textarea'},
+      {key:'cadence',label:'Posting cadence',type:'textarea'},
+      {key:'pillars',label:'Content pillars',type:'textarea',wide:true},
+      {key:'goals',label:'Goals this quarter',type:'textarea',wide:true},
+      {key:'notes',label:'Notes',type:'textarea',wide:true},
+    ]}]},
+  post: { title:'Post', sections:[
+    {legend:'Post', fields:[
+      {key:'title',label:'Working title',required:true,wide:true},
+      {key:'date',label:'Publish date',type:'date',required:true},
+      {key:'status',label:'Status',type:'select',options:POST_STATUS},
+      {key:'market',label:'Market',type:'select',options:marketOptions,blank:'No market'},
+      {key:'account',label:'Account',hint:'e.g. @sensica_italy'},
+      {key:'format',label:'Format',type:'select',options:POST_FORMATS},
+      {key:'product',label:'Product',type:'select',options:PRODUCTS,blank:'None'},
+      {key:'pillar',label:'Content pillar',wide:true},
+      {key:'caption',label:'Caption or brief',type:'textarea',wide:true,rows:4},
+      {key:'link',label:'Link to asset or live post',type:'url',wide:true},
+    ]}]},
+  distributor: { title:'Distributor', sections:[
+    {legend:'Distributor', fields:[
+      {key:'name',label:'Name',required:true},
+      {key:'status',label:'Status',type:'select',options:DIST_STATUS},
+      {key:'market',label:'Market',type:'select',options:marketOptions,blank:'No market'},
+      {key:'territory',label:'Territory or channels'},
+      {key:'contact',label:'Main contact',wide:true},
+      {key:'products',label:'Products they carry or are considering',type:'textarea',wide:true},
+      {key:'terms',label:'Agreement and terms',type:'textarea',wide:true},
+    ]},
+    {legend:'Next step', fields:[
+      {key:'nextStep',label:'Next step'},
+      {key:'nextDate',label:'Due',type:'date'},
+      {key:'notes',label:'Notes',type:'textarea',wide:true},
+    ]}]},
+  activity: { title:'Activity', sections:[
+    {legend:'Activity', fields:[
+      {key:'distributorId',label:'Distributor',type:'select',options:distOptions,required:true},
+      {key:'date',label:'Date',type:'date',required:true},
+      {key:'type',label:'Type',type:'select',options:ACT_TYPES},
+      {key:'summary',label:'What happened',type:'textarea',wide:true,required:true,rows:4},
+      {key:'followUp',label:'Follow-up'},
+      {key:'followUpDate',label:'Follow-up due',type:'date'},
+      {key:'done',label:'Follow-up done',type:'checkbox',wide:true},
+    ]}]},
+};
+
+const S = {
+  user:null, owner:false, entries:new Map(), people:[],
+  status:'starting', view:'overview', market:'all', preview:null,
+  month:firstOfMonth(new Date()), selDist:null, unsub:[],
+};
+
+/* ---------- helpers ---------- */
+function esc(s){return String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function todayISO(){return iso(new Date());}
+function parseISO(s){const [y,m,d]=String(s).split('-').map(Number);return new Date(y,(m||1)-1,d||1);}
+function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x;}
+function firstOfMonth(d){return new Date(d.getFullYear(),d.getMonth(),1);}
+function fmt(s,o={day:'numeric',month:'short'}){return s?parseISO(s).toLocaleDateString('en-GB',o):'';}
+function newId(prefix){return prefix+'-'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+function slug(s){return String(s).replace(/\s+/g,'-');}
+function normEmail(e){return String(e||'').trim().toLowerCase();}
+function canWrite(){return S.owner&&!S.preview;}
+
+function allItems(){
+  const list=[...S.entries.values()];
+  if(S.preview) return list.filter(x=>(x.viewers||[]).includes(S.preview));
+  return list;
+}
+function ofKind(k){return allItems().filter(x=>x.kind===k);}
+function byId(id){return allItems().find(x=>x.id===id);}
+function markets(){return ofKind('market').sort((a,b)=>(a.order??99)-(b.order??99)||String(a.name).localeCompare(String(b.name)));}
+function marketColor(id){const i=markets().findIndex(m=>m.id===id);return i<0?'var(--muted)':MARKET_COLORS[i%MARKET_COLORS.length];}
+function marketName(id,fallback){const m=markets().find(m=>m.id===id);return m?m.name:(fallback||'No market');}
+function inFilter(x){return S.market==='all'||x.market===S.market;}
+function personName(email){const p=S.people.find(p=>p.email===email);return p?(p.name||p.email):email;}
+function shareTag(x){
+  if(!S.owner||S.preview) return '';
+  const v=x.viewers||[];
+  if(!v.length) return '<span class="tag" title="Only you can see this">Private</span>';
+  const names=v.map(personName);
+  const label=v.length===1?`Shared with ${names[0]}`:`Shared with ${v.length}`;
+  return `<span class="tag people" title="${esc(names.join(', '))}">${esc(label)}</span>`;
+}
+
+let toastTimer;
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('on'),3400);}
+function errMsg(e){
+  const c=e&&e.code||'';
+  if(c.includes('permission-denied')) return 'Firebase refused this change. Check that your email is set as the owner in the security rules.';
+  if(c.includes('resource-exhausted')) return 'The free daily limit has been reached. It resets at midnight Pacific time.';
+  if(c.includes('unavailable')) return 'Can’t reach Firebase. Check your connection and try again.';
+  return 'Couldn’t save: '+(e&&e.message||'unknown error');
+}
+
+/* ---------- firebase ---------- */
+const configured=!Object.values(firebaseConfig).some(v=>String(v).includes('PASTE'));
+let auth, db;
+if(configured){
+  const app=initializeApp(firebaseConfig);
+  auth=getAuth(app);
+  db=getFirestore(app);
+}
+
+async function signIn(){
+  const provider=new GoogleAuthProvider();
+  provider.setCustomParameters({prompt:'select_account'});
+  try{await signInWithPopup(auth,provider);}
+  catch(e){
+    if(e.code==='auth/popup-blocked'||e.code==='auth/operation-not-supported-in-this-environment') await signInWithRedirect(auth,provider);
+    else if(e.code!=='auth/popup-closed-by-user'&&e.code!=='auth/cancelled-popup-request') toast(e.code==='auth/unauthorized-domain'?'This web address isn’t on Firebase’s authorized domains yet. See README, step 7.':'Sign-in failed: '+e.message);
+  }
+}
+
+function stopListeners(){S.unsub.forEach(u=>u());S.unsub=[];}
+
+async function startSession(user){
+  stopListeners();
+  S.user=user;S.entries=new Map();S.people=[];S.preview=null;
+  S.status='loading';render();
+  try{
+    await getDoc(doc(db,'config','owner'));
+    S.owner=true;
+  }catch(e){S.owner=false;}
+  const timer=setTimeout(()=>{if(S.status==='loading'){S.status='slow';render();}},10000);
+  const onErr=e=>{clearTimeout(timer);S.status='error';S.lastError=e;render();};
+  if(S.owner){
+    S.unsub.push(onSnapshot(collection(db,'entries'),snap=>{
+      S.entries=new Map(snap.docs.map(d=>[d.id,{...d.data(),id:d.id}]));
+      clearTimeout(timer);S.status='ready';render();
+    },onErr));
+    S.unsub.push(onSnapshot(doc(db,'config','people'),snap=>{
+      S.people=(snap.exists()&&Array.isArray(snap.data().list))?snap.data().list:[];
+      render();
+    },()=>{}));
+  }else{
+    const q=query(collection(db,'entries'),where('viewers','array-contains',normEmail(user.email)));
+    S.unsub.push(onSnapshot(q,snap=>{
+      S.entries=new Map(snap.docs.map(d=>[d.id,{...d.data(),id:d.id}]));
+      clearTimeout(timer);S.status='ready';render();
+    },onErr));
+  }
+}
+
+async function saveEntry(kind,id,values,viewers){
+  const body={...values,kind,viewers,updatedAt:Date.now()};
+  if(body.market!==undefined) body.marketName=body.market?marketName(body.market,''):'';
+  await setDoc(doc(db,'entries',id),body);
+}
+async function setViewers(ids,viewers){
+  for(let i=0;i<ids.length;i+=400){
+    const b=writeBatch(db);
+    ids.slice(i,i+400).forEach(id=>b.update(doc(db,'entries',id),{viewers,updatedAt:Date.now()}));
+    await b.commit();
+  }
+}
+async function deleteEntries(ids){
+  for(let i=0;i<ids.length;i+=400){
+    const b=writeBatch(db);
+    ids.slice(i,i+400).forEach(id=>b.delete(doc(db,'entries',id)));
+    await b.commit();
+  }
+}
+async function savePeople(list){await setDoc(doc(db,'config','people'),{list});}
+
+/* ---------- routing ---------- */
+function viewFromHash(){const h=location.hash.replace('#','');return VIEWS.includes(h)?h:'overview';}
+window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0);});
+
+/* ---------- render ---------- */
+function renderAccount(){
+  const el=document.getElementById('account');
+  const tab=document.querySelector('nav.tabs a[data-view="sharing"]');
+  tab.hidden=!(S.user&&S.owner);
+  if(!S.user){el.innerHTML='';return;}
+  el.innerHTML=`<span class="who" title="${esc(S.user.email)}">${esc(S.user.email)}</span><button class="btn small" data-action="signout">Sign out</button>`;
+}
+
+function render(){
+  S.view=viewFromHash();
+  if(S.view==='sharing'&&!S.owner) S.view='overview';
+  document.querySelectorAll('nav.tabs a').forEach(a=>a.setAttribute('aria-current',a.dataset.view===S.view?'page':'false'));
+  renderAccount();
+  const main=document.getElementById('main');
+  if(!configured){
+    main.innerHTML=`<div class="gate"><h1>Almost there</h1><p>This hub isn’t connected to Firebase yet. Open <code>index.html</code>, paste your Firebase config at the top of the script, and upload it again. The README walks through it.</p></div>`;
+    return;
+  }
+  if(location.protocol==='file:'){
+    main.innerHTML=`<div class="gate"><h1>Open it from its web address</h1><p>Google sign-in doesn’t work when the file is opened straight from your computer. Upload it to GitHub Pages first (README, step 6) and open that link.</p></div>`;
+    return;
+  }
+  if(S.status==='starting'){main.innerHTML='<p class="empty">Loading…</p>';return;}
+  if(!S.user){
+    main.innerHTML=`<div class="gate"><h1>Sensica market hub</h1><p>Sign in with the Google account your invitation was sent to. You’ll see the parts of the hub that have been shared with you.</p><button class="btn primary" data-action="signin">Sign in with Google</button></div>`;
+    return;
+  }
+  if(S.status==='loading'&&!S.entries.size){main.innerHTML='<p class="empty">Loading your hub…</p>';return;}
+  if(S.status==='error'){
+    main.innerHTML=`<div class="gate"><h1>Couldn’t load the hub</h1><p>${esc(errMsg(S.lastError))}</p><button class="btn" data-action="signout">Sign out</button></div>`;
+    return;
+  }
+  let top='';
+  if(S.preview) top+=`<div class="preview-bar"><span>Previewing what ${esc(personName(S.preview))} sees. Editing is paused.</span><button class="btn small" data-action="endpreview">Exit preview</button></div>`;
+  if(S.status==='slow') top+='<div class="banner">Firebase can’t be reached yet. What’s shown may be out of date.</div>';
+  if(!S.owner&&!S.entries.size){
+    main.innerHTML=`<div class="gate"><h1>Nothing shared yet</h1><p>Nothing in this hub has been shared with ${esc(S.user.email)} so far. If you expected to see something, check that you signed in with the email address you were invited with.</p></div>`;
+    return;
+  }
+  const views={overview:renderOverview,calendar:renderCalendar,markets:renderMarkets,distributors:renderDistributors,sharing:renderSharing};
+  main.innerHTML=top+views[S.view]();
+}
+
+function marketPills(){
+  const ms=markets();
+  if(!ms.length) return '';
+  return `<div class="pills" role="group" aria-label="Filter by market">
+    <button class="pill" data-market="all" aria-pressed="${S.market==='all'}">All markets</button>
+    ${ms.map(m=>`<button class="pill" data-market="${esc(m.id)}" aria-pressed="${S.market===m.id}" style="--mc:${marketColor(m.id)}"><span class="dot"></span>${esc(m.name)}</button>`).join('')}
+  </div>`;
+}
+
+function followUps(){
+  const items=[];
+  for(const d of ofKind('distributor')){
+    if(d.nextStep&&d.nextDate) items.push({date:d.nextDate,title:d.nextStep,dist:d,market:d.market,open:'distributor:'+d.id});
+  }
+  for(const a of ofKind('activity')){
+    if(a.followUp&&a.followUpDate&&!a.done){
+      const d=byId(a.distributorId);
+      items.push({date:a.followUpDate,title:a.followUp,dist:d,market:d?d.market:'',open:'activity:'+a.id});
+    }
+  }
+  return items.sort((a,b)=>a.date.localeCompare(b.date));
+}
+
+function renderOverview(){
+  const t=todayISO(), end=iso(addDays(new Date(),14));
+  const posts=ofKind('post').filter(inFilter).filter(p=>p.date>=t&&p.date<=end).sort((a,b)=>a.date.localeCompare(b.date));
+  const fus=followUps().filter(inFilter).filter(f=>f.date<=end);
+  const overdue=fus.filter(f=>f.date<t).length;
+  const today=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+  const summary=[
+    posts.length?`${posts.length} ${posts.length===1?'post':'posts'} planned in the next two weeks`:'No posts planned in the next two weeks',
+    fus.length?`${fus.length} distributor ${fus.length===1?'follow-up':'follow-ups'} due${overdue?`, ${overdue} overdue`:''}`:'no distributor follow-ups due',
+  ].join(', ')+'.';
+  const postRows=posts.length?posts.map(p=>`
+    <div class="row">
+      <div class="when">${esc(fmt(p.date,{weekday:'short',day:'numeric'}))}</div>
+      <div class="what">
+        <button class="link" data-open="post:${esc(p.id)}">${esc(p.title)}</button>
+        <div class="meta"><span class="dot" style="--mc:${marketColor(p.market)}"></span>${esc(marketName(p.market,p.marketName))}${p.format?` <span>${esc(p.format)}</span>`:''}${p.product?` <span>${esc(p.product)}</span>`:''} <span class="status s-${slug(p.status||'Idea')}">${esc(p.status||'Idea')}</span></div>
+      </div>
+    </div>`).join(''):`<p class="empty">Nothing on the calendar yet.${canWrite()?' <button class="btn small" data-new="post">Plan a post</button>':''}</p>`;
+  const fuRows=fus.length?fus.map(f=>`
+    <div class="row">
+      <div class="when ${f.date<t?'overdue':''}">${f.date<t?'Overdue':esc(fmt(f.date))}</div>
+      <div class="what">
+        <button class="link" data-open="${esc(f.open)}">${esc(f.title)}</button>
+        <div class="meta">${f.dist?esc(f.dist.name):'Distributor'}${f.date<t?` <span>was due ${esc(fmt(f.date))}</span>`:''}</div>
+      </div>
+    </div>`).join(''):'<p class="empty">No follow-ups due in the next two weeks.</p>';
+  const month=firstOfMonth(new Date());
+  const mStart=iso(month), mEnd=iso(new Date(month.getFullYear(),month.getMonth()+1,0));
+  const ms=markets();
+  const glance=ms.length?`
+    <section class="glance panel">
+      <h2>Markets at a glance</h2>
+      <div class="glance-wrap"><table class="glance-table">
+        <thead><tr><th>Market</th><th>Positioning</th><th>Posts this month</th><th>Distributors</th></tr></thead>
+        <tbody>${ms.map(m=>{
+          const pc=ofKind('post').filter(p=>p.market===m.id&&p.date>=mStart&&p.date<=mEnd);
+          const posted=pc.filter(p=>p.status==='Posted').length;
+          const dc=ofKind('distributor').filter(d=>d.market===m.id);
+          const active=dc.filter(d=>d.status==='Active').length;
+          return `<tr>
+            <td><div class="mname"><span class="dot" style="--mc:${marketColor(m.id)}"></span>${esc(m.name)}</div></td>
+            <td class="pos ${m.positioning?'':'none'}">${m.positioning?esc(m.positioning):'Not written yet'}</td>
+            <td>${pc.length?`${pc.length} planned, ${posted} posted`:'<span style="color:var(--muted)">None</span>'}</td>
+            <td>${dc.length?`${dc.length}${active?`, ${active} active`:''}`:'<span style="color:var(--muted)">None</span>'}</td>
+          </tr>`;}).join('')}</tbody>
+      </table></div>
+    </section>`:'';
+  return `
+    <h1>${esc(today)}</h1>
+    <p class="lede">${esc(summary)}</p>
+    <div class="toolbar">${marketPills()}</div>
+    <div class="ov-grid">
+      <section class="panel"><h2>Coming up on social</h2>${postRows}</section>
+      <section class="panel"><h2>Distributor follow-ups</h2>${fuRows}</section>
+    </div>
+    ${glance}`;
+}
+
+function renderCalendar(){
+  const first=S.month;
+  const label=first.toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+  const offset=(first.getDay()+6)%7;
+  const start=addDays(first,-offset);
+  const dim=new Date(first.getFullYear(),first.getMonth()+1,0).getDate();
+  const cells=Math.ceil((offset+dim)/7)*7;
+  const t=todayISO();
+  const posts=ofKind('post').filter(inFilter);
+  const byDate={};
+  for(const p of posts){(byDate[p.date]=byDate[p.date]||[]).push(p);}
+  Object.values(byDate).forEach(a=>a.sort((x,y)=>String(x.title).localeCompare(String(y.title))));
+  let grid=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>`<div class="dow">${d}</div>`).join('');
+  for(let i=0;i<cells;i++){
+    const d=addDays(start,i), k=iso(d), list=byDate[k]||[];
+    const out=d.getMonth()!==first.getMonth();
+    grid+=`<div class="cell ${out?'out':''} ${k===t?'today':''}">
+      <div class="num"><b>${d.getDate()}</b>${canWrite()?`<button class="add" data-new="post" data-date="${k}" aria-label="Add post on ${esc(fmt(k,{day:'numeric',month:'long'}))}">+</button>`:''}</div>
+      ${list.slice(0,4).map(p=>`<button class="chip ${p.status==='Posted'?'posted':''}" data-open="post:${esc(p.id)}" style="--mc:${marketColor(p.market)}" title="${esc(p.title)}${p.format?' ('+esc(p.format)+')':''}"><span class="t">${esc(p.title)}</span></button>`).join('')}
+      ${list.length>4?`<span class="more">${list.length-4} more</span>`:''}
+    </div>`;
+  }
+  const mStart=iso(first), mEnd=iso(new Date(first.getFullYear(),first.getMonth()+1,0));
+  const groups={};
+  posts.filter(p=>p.date>=mStart&&p.date<=mEnd).sort((a,b)=>a.date.localeCompare(b.date)).forEach(p=>{(groups[p.date]=groups[p.date]||[]).push(p);});
+  const agenda=Object.keys(groups).length?Object.keys(groups).map(k=>`
+    <div class="day"><h3>${esc(fmt(k,{weekday:'long',day:'numeric',month:'long'}))}</h3>
+      ${groups[k].map(p=>`<button class="item" data-open="post:${esc(p.id)}" style="--mc:${marketColor(p.market)}">
+        <div>${esc(p.title)}</div>
+        <div class="meta"><span>${esc(marketName(p.market,p.marketName))}</span>${p.format?`<span>${esc(p.format)}</span>`:''}<span class="status s-${slug(p.status||'Idea')}">${esc(p.status||'Idea')}</span></div>
+      </button>`).join('')}
+    </div>`).join(''):'<p class="empty">No posts this month.</p>';
+  return `
+    <div class="cal-head">
+      <h1>${esc(label)}</h1>
+      <button class="icon-btn" data-month="-1" aria-label="Previous month">‹</button>
+      <button class="icon-btn" data-month="1" aria-label="Next month">›</button>
+      <button class="btn ghost" data-month="0">This month</button>
+    </div>
+    <div class="toolbar">${marketPills()}<span class="grow"></span>${canWrite()?'<button class="btn primary" data-new="post">Add post</button>':''}</div>
+    <div class="cal">${grid}</div>
+    <div class="agenda">${agenda}</div>`;
+}
+
+function dlRow(label,val,showEmpty){
+  if(!val&&!showEmpty) return '';
+  return `<dt>${esc(label)}</dt><dd class="${val?'':'none'}">${val?esc(val):'Not set'}</dd>`;
+}
+
+function renderMarkets(){
+  const se=canWrite();
+  const b=byId('brand');
+  const brand=b?`
+    <section class="brand-card">
+      <div class="bc-head"><h2>Brand foundation</h2>${shareTag(b)}${se?'<button class="btn small" data-open="brand:brand">Edit</button>':''}</div>
+      ${b.positioning?`<p class="core">${esc(b.positioning)}</p>`:''}
+      <dl>
+        ${b.proof?`<div><dt>Credentials and proof</dt><dd>${esc(b.proof)}</dd></div>`:''}
+        ${b.voice?`<div><dt>Voice and tone</dt><dd>${esc(b.voice)}</dd></div>`:''}
+        ${b.copyRules?`<div><dt>Copy rules</dt><dd>${esc(b.copyRules)}</dd></div>`:''}
+        ${b.visual?`<div><dt>Visual identity</dt><dd>${esc(b.visual)}</dd></div>`:''}
+      </dl>
+    </section>`:(se?`<section class="brand-card"><div class="bc-head"><h2>Brand foundation</h2></div><p style="margin:0 0 14px">Write the positioning every market inherits.</p><button class="btn small" data-new="brand">Write brand foundation</button></section>`:'');
+  const ms=markets();
+  const cards=ms.length?ms.map(m=>`
+    <article class="mk" style="--mc:${marketColor(m.id)}">
+      <div class="mk-head"><h2>${esc(m.name)}</h2>${shareTag(m)}${se?`<button class="btn small" data-open="market:${esc(m.id)}">Edit</button>`:''}</div>
+      <p class="statement ${m.positioning?'':'none'}">${m.positioning?esc(m.positioning):(se?'No positioning statement yet. Edit this market to write one.':'No positioning statement yet.')}</p>
+      ${m.focus?`<h3>Current focus</h3><p style="margin:0;white-space:pre-line">${esc(m.focus)}</p>`:''}
+      <h3>Positioning</h3>
+      <dl>
+        ${dlRow('Core audience',m.audience,se)}${dlRow('Price position',m.pricePosition,se)}${dlRow('Hero products',m.heroProducts,se)}
+        ${dlRow('Proof points',m.proofPoints,se)}${dlRow('Tone and language',m.tone,se)}${dlRow('Competitors',m.competitors,se)}
+      </dl>
+      <h3>Social strategy</h3>
+      <dl>${dlRow('Accounts',m.accounts,se)}${dlRow('Content pillars',m.pillars,se)}${dlRow('Cadence',m.cadence,se)}${dlRow('Goals',m.goals,se)}</dl>
+      <h3>Channels</h3>
+      <dl>${dlRow('Where we sell',m.channels,se)}${dlRow('Notes',m.notes,false)}</dl>
+    </article>`).join(''):'<p class="empty">No markets yet.</p>';
+  return `
+    <h1>Brand positioning by market</h1>
+    <p class="lede">One foundation, adapted per market. Each card holds the positioning and the social strategy that the calendar follows.</p>
+    ${brand}
+    <div class="toolbar"><span class="grow"></span>${se?'<button class="btn primary" data-new="market">Add market</button>':''}</div>
+    <div class="mk-list">${cards}</div>`;
+}
+
+function renderDistributors(){
+  const t=todayISO(), se=canWrite();
+  const ds=ofKind('distributor').filter(inFilter).sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+  if(!ds.find(d=>d.id===S.selDist)) S.selDist=ds[0]?ds[0].id:null;
+  const list=ds.length?ds.map(d=>`
+    <button class="d-item" data-dist="${esc(d.id)}" aria-current="${d.id===S.selDist}">
+      <div class="n"><span>${esc(d.name)}</span><span class="status s-${slug(d.status||'Prospect')}">${esc(d.status||'Prospect')}</span></div>
+      <div class="meta"><span class="dot" style="--mc:${marketColor(d.market)}"></span>${esc(marketName(d.market,d.marketName))}${d.nextDate?`<span>Next: ${esc(fmt(d.nextDate))}</span>`:''}</div>
+    </button>`).join(''):`<p class="empty">No distributors${S.market==='all'?'':' in this market'} yet.</p>`;
+  const d=ds.find(x=>x.id===S.selDist);
+  let detail='';
+  if(d){
+    const acts=ofKind('activity').filter(a=>a.distributorId===d.id).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+    detail=`<section class="d-detail">
+      <div class="dh"><h2>${esc(d.name)}</h2>${shareTag(d)}<span class="status s-${slug(d.status||'Prospect')}">${esc(d.status||'Prospect')}</span>${se?`<button class="btn small" data-open="distributor:${esc(d.id)}">Edit</button>`:''}</div>
+      <dl>
+        ${dlRow('Market',marketName(d.market,d.marketName),true)}${dlRow('Territory or channels',d.territory,se)}${dlRow('Main contact',d.contact,se)}
+        ${dlRow('Products',d.products,se)}${dlRow('Agreement and terms',d.terms,se)}${dlRow('Notes',d.notes,false)}
+      </dl>
+      ${d.nextStep?`<div class="next"><b>Next step</b><span>${esc(d.nextStep)}</span>${d.nextDate?`<span class="when ${d.nextDate<t?'overdue':''}">${d.nextDate<t?'Overdue, was due ':'Due '}${esc(fmt(d.nextDate,{day:'numeric',month:'long'}))}</span>`:''}</div>`:''}
+      <div class="timeline">
+        <div class="th"><h3>Activity log</h3>${se?`<button class="btn small primary" data-new="activity" data-dist="${esc(d.id)}">Log activity</button>`:''}</div>
+        ${acts.length?acts.map(a=>{
+          let fu='';
+          if(a.followUp){
+            const od=!a.done&&a.followUpDate&&a.followUpDate<t;
+            fu=`<div class="fu ${a.done?'':(od?'overdue':'open')}">${a.done?'Done: ':(od?'Overdue: ':'Follow-up: ')}${esc(a.followUp)}${a.followUpDate&&!a.done?`, ${esc(fmt(a.followUpDate))}`:''}</div>`;
+          }
+          return `<div class="ev">
+            <div class="d">${esc(fmt(a.date,{day:'numeric',month:'short',year:'2-digit'}))}</div>
+            <div class="body">
+              <div class="top-line"><span class="ty">${esc(a.type||'Note')}</span>${shareTag(a)}<button class="edit" data-open="activity:${esc(a.id)}">${se?'Edit':'View'}</button></div>
+              <p>${esc(a.summary)}</p>${fu}
+            </div>
+          </div>`;}).join(''):'<p class="empty">Nothing logged yet.</p>'}
+      </div>
+    </section>`;
+  }
+  return `
+    <h1>Distributors</h1>
+    <p class="lede">Who represents Sensica where, what they’re doing with the brand, and what’s owed next.</p>
+    <div class="toolbar">${marketPills()}<span class="grow"></span>${se?'<button class="btn primary" data-new="distributor">Add distributor</button>':''}</div>
+    <div class="dist"><div class="d-list">${list}</div>${detail}</div>`;
+}
+
+function renderSharing(){
+  const all=[...S.entries.values()];
+  const groups=[...new Set(S.people.map(p=>p.group).filter(Boolean))].sort();
+  const rows=S.people.length?S.people.map(p=>{
+    const n=all.filter(x=>(x.viewers||[]).includes(p.email)).length;
+    return `<tr>
+      <td><b>${esc(p.name||'')}</b></td>
+      <td>${esc(p.email)}</td>
+      <td>${esc(p.group||'')}</td>
+      <td>${n} ${n===1?'entry':'entries'}</td>
+      <td class="actions"><button class="btn small" data-preview="${esc(p.email)}">Preview their view</button> <button class="btn small danger" data-remove-person="${esc(p.email)}">Remove</button></td>
+    </tr>`;}).join(''):'<tr><td colspan="5" class="empty">No people yet. Add the first person below.</td></tr>';
+  return `
+    <h1>Sharing</h1>
+    <p class="lede">Add the people you work with here. Then open any entry and tick who can see it. People sign in with the Google account for the email you add, and see only what you’ve ticked for them.</p>
+    <div class="sharing-grid">
+      <section class="panel">
+        <h2>People</h2>
+        <div class="glance-wrap"><table class="people-table">
+          <thead><tr><th>Name</th><th>Email</th><th>Group</th><th>Can see</th><th></th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table></div>
+        <form class="add-person" id="addPerson">
+          <div class="field"><label for="pName">Name</label><input id="pName" name="name" placeholder="e.g. Ji-won Park"></div>
+          <div class="field"><label for="pEmail">Google account email</label><input id="pEmail" name="email" type="email" required placeholder="name@company.com"></div>
+          <div class="field"><label for="pGroup">Group</label><input id="pGroup" name="group" list="groupList" placeholder="e.g. Yozma Group"><datalist id="groupList">${groups.map(g=>`<option value="${esc(g)}">`).join('')}</datalist></div>
+          <button class="btn primary" type="submit">Add person</button>
+        </form>
+      </section>
+      <section class="panel">
+        <h2>Back up and import</h2>
+        <div class="data-tools">
+          <p>Download a copy of everything to keep somewhere safe, or import a starter or backup file. Keep these files off GitHub.</p>
+          <button class="btn" data-action="backup">Download backup</button>
+          <label class="btn" for="importFile" style="display:inline-block">Import file</label>
+          <input id="importFile" type="file" accept="application/json,.json" hidden>
+        </div>
+      </section>
+    </div>`;
+}
+
+/* ---------- forms ---------- */
+function fieldHTML(f,val,ro){
+  const id='f_'+f.key, req=f.required?' required':'', dis=ro?' disabled':'';
+  if(f.type==='checkbox') return `<div class="field ${f.wide?'wide':''}"><label class="check"><input type="checkbox" name="${f.key}" ${val?'checked':''}${dis}> ${esc(f.label)}</label></div>`;
+  let input;
+  if(f.type==='textarea') input=`<textarea id="${id}" name="${f.key}" rows="${f.rows||3}"${req}${dis}>${esc(val)}</textarea>`;
+  else if(f.type==='select'){
+    const opts=typeof f.options==='function'?f.options():f.options;
+    input=`<select id="${id}" name="${f.key}"${req}${dis}>${f.blank!==undefined?`<option value="">${esc(f.blank)}</option>`:''}${opts.map(o=>{const v=typeof o==='string'?o:o.value,l=typeof o==='string'?o:o.label;return `<option value="${esc(v)}"${v===val?' selected':''}>${esc(l)}</option>`;}).join('')}</select>`;
+  } else input=`<input id="${id}" type="${f.type||'text'}" name="${f.key}" value="${esc(val)}"${req}${dis}>`;
+  return `<div class="field ${f.wide?'wide':''}"><label for="${id}">${esc(f.label)}${f.required&&!ro?' *':''}</label>${f.hint&&!ro?`<small>${esc(f.hint)}</small>`:''}${input}</div>`;
+}
+
+function whoBox(kind,viewers){
+  const label=kind==='brand'?'brand foundation':kind;
+  if(!S.people.length) return `<div class="who-box"><div class="wb-head"><b>Who can see this ${esc(label)}</b><span>Only you</span></div><p style="margin:0;font-size:13px;color:var(--muted)">Add people in the Sharing tab to share entries with them.</p></div>`;
+  const byGroup={};
+  S.people.forEach(p=>{const g=p.group||'No group';(byGroup[g]=byGroup[g]||[]).push(p);});
+  const gnames=Object.keys(byGroup).sort((a,b)=>a==='No group'?1:b==='No group'?-1:a.localeCompare(b));
+  return `<div class="who-box">
+    <div class="wb-head"><b>Who can see this ${esc(label)}</b><span id="whoCount"></span></div>
+    ${gnames.map(g=>{
+      const ps=byGroup[g];
+      const allOn=ps.every(p=>viewers.includes(p.email));
+      return `<div class="who-group">
+        <label class="gname"><input type="checkbox" data-group-toggle="${esc(g)}" ${allOn?'checked':''}> ${esc(g)}</label>
+        <div class="who-people">${ps.map(p=>`<label><input type="checkbox" name="_viewer" value="${esc(p.email)}" data-group="${esc(g)}" ${viewers.includes(p.email)?'checked':''}> ${esc(p.name||p.email)}${p.name?` <small>${esc(p.email)}</small>`:''}</label>`).join('')}</div>
+      </div>`;}).join('')}
+    ${kind==='distributor'?'<label class="check apply-row"><input type="checkbox" name="_applyActs" checked> Give the same people access to this distributor’s activity log</label>':''}
+  </div>`;
+}
+
+function openForm(kind,item,defaults={}){
+  const spec=SPECS[kind];
+  const ro=!canWrite();
+  const isNew=!item;
+  const data=item?{...item}:{...defaults};
+  const id=item?item.id:(kind==='brand'?'brand':newId(kind));
+  const viewers=[...(data.viewers||[])];
+  const dlg=document.getElementById('dlg'), form=document.getElementById('dlgForm');
+  const heading=isNew?`New ${spec.title.toLowerCase()}`:(data.name||data.title||spec.title);
+  form.innerHTML=`
+    <div class="dlg-head"><h2>${esc(heading)}</h2><button type="button" class="icon-btn" data-close aria-label="Close">×</button></div>
+    <div class="dlg-body">
+      ${ro?'':whoBox(kind,viewers)}
+      ${spec.sections.map(sec=>`<fieldset><legend>${esc(sec.legend)}</legend><div class="fields">${sec.fields.map(f=>fieldHTML(f,data[f.key]??'',ro)).join('')}</div></fieldset>`).join('')}
+    </div>
+    <div class="dlg-foot">
+      ${!ro&&!isNew&&kind!=='brand'?'<button type="button" class="btn danger" data-delete>Delete</button>':''}
+      <span class="grow"></span>
+      <button type="button" class="btn ghost" data-close>${ro?'Close':'Cancel'}</button>
+      ${ro?'':'<button type="submit" class="btn primary">Save</button>'}
+    </div>`;
+  const updateCount=()=>{
+    const n=form.querySelectorAll('input[name="_viewer"]:checked').length;
+    const el=form.querySelector('#whoCount');
+    if(el) el.textContent=n?`${n} ${n===1?'person':'people'}`:'Only you';
+    form.querySelectorAll('[data-group-toggle]').forEach(g=>{
+      const boxes=[...form.querySelectorAll(`input[name="_viewer"][data-group="${CSS.escape(g.dataset.groupToggle)}"]`)];
+      g.checked=boxes.length&&boxes.every(b=>b.checked);
+      g.indeterminate=!g.checked&&boxes.some(b=>b.checked);
+    });
+  };
+  form.querySelectorAll('[data-group-toggle]').forEach(g=>g.addEventListener('change',()=>{
+    form.querySelectorAll(`input[name="_viewer"][data-group="${CSS.escape(g.dataset.groupToggle)}"]`).forEach(b=>b.checked=g.checked);
+    updateCount();
+  }));
+  form.querySelectorAll('input[name="_viewer"]').forEach(b=>b.addEventListener('change',updateCount));
+  updateCount();
+  form.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>dlg.close());
+  const del=form.querySelector('[data-delete]');
+  if(del){
+    let armed=false,timer;
+    const acts=kind==='distributor'?[...S.entries.values()].filter(a=>a.kind==='activity'&&a.distributorId===id):[];
+    del.onclick=async()=>{
+      if(!armed){
+        armed=true;
+        del.textContent=acts.length?`Confirm: delete with ${acts.length} ${acts.length===1?'activity':'activities'}`:'Confirm delete';
+        timer=setTimeout(()=>{armed=false;del.textContent='Delete';},4000);
+        return;
+      }
+      clearTimeout(timer);
+      try{await deleteEntries([...acts.map(a=>a.id),id]);dlg.close();toast('Deleted.');}
+      catch(e){toast(errMsg(e));}
+    };
+  }
+  form.onsubmit=async(ev)=>{
+    ev.preventDefault();
+    if(ro){dlg.close();return;}
+    const values={};
+    for(const sec of spec.sections) for(const f of sec.fields){
+      const el=form.elements[f.key];
+      values[f.key]=f.type==='checkbox'?el.checked:el.value.trim();
+    }
+    const missing=spec.sections.flatMap(s=>s.fields).find(f=>f.required&&!values[f.key]);
+    if(missing){toast(`Add ${missing.label.toLowerCase()} to save.`);form.elements[missing.key].focus();return;}
+    if(kind==='market') values.order=item?(item.order??markets().length):markets().length;
+    const chosen=[...form.querySelectorAll('input[name="_viewer"]:checked')].map(b=>b.value);
+    const btn=form.querySelector('[type=submit]');btn.disabled=true;btn.textContent='Saving…';
+    try{
+      await saveEntry(kind,id,values,chosen);
+      if(kind==='distributor'&&form.elements._applyActs&&form.elements._applyActs.checked){
+        const actIds=[...S.entries.values()].filter(a=>a.kind==='activity'&&a.distributorId===id).map(a=>a.id);
+        if(actIds.length) await setViewers(actIds,chosen);
+      }
+      dlg.close();toast('Saved.');
+      if(kind==='distributor') S.selDist=id;
+    }catch(e){toast(errMsg(e));btn.disabled=false;btn.textContent='Save';}
+  };
+  dlg.showModal();
+  const firstInput=form.querySelector('.fields input:not([type=checkbox]),.fields textarea,.fields select');
+  if(firstInput&&!ro&&isNew) firstInput.focus();
+}
+
+/* ---------- people, backup, import ---------- */
+async function addPerson(form){
+  const email=normEmail(form.elements.email.value);
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){toast('Enter a valid email address.');return;}
+  if(S.people.some(p=>p.email===email)){toast('That person is already on the list.');return;}
+  const list=[...S.people,{name:form.elements.name.value.trim(),email,group:form.elements.group.value.trim()}];
+  try{await savePeople(list);form.reset();toast('Added. Now tick them on the entries they should see.');}
+  catch(e){toast(errMsg(e));}
+}
+let removeArmed=null;
+async function removePerson(btn,email){
+  if(removeArmed!==email){
+    removeArmed=email;btn.textContent='Confirm remove';
+    setTimeout(()=>{if(removeArmed===email){removeArmed=null;render();}},4000);
+    return;
+  }
+  removeArmed=null;
+  try{
+    const affected=[...S.entries.values()].filter(x=>(x.viewers||[]).includes(email));
+    for(let i=0;i<affected.length;i+=400){
+      const b=writeBatch(db);
+      affected.slice(i,i+400).forEach(x=>b.update(doc(db,'entries',x.id),{viewers:(x.viewers||[]).filter(v=>v!==email)}));
+      await b.commit();
+    }
+    await savePeople(S.people.filter(p=>p.email!==email));
+    toast('Removed. They can no longer see anything in the hub.');
+  }catch(e){toast(errMsg(e));}
+}
+function backup(){
+  const data={app:'sensica-hub',version:1,exportedAt:new Date().toISOString(),people:S.people,entries:[...S.entries.values()]};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download=`sensica-hub-backup-${todayISO()}.json`;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+}
+async function importFile(file){
+  try{
+    const data=JSON.parse(await file.text());
+    if(!data||!Array.isArray(data.entries)) throw new Error('This isn’t a hub backup or starter file.');
+    const entries=data.entries.filter(e=>e&&e.id&&e.kind);
+    for(let i=0;i<entries.length;i+=400){
+      const b=writeBatch(db);
+      entries.slice(i,i+400).forEach(e=>{const {id,...body}=e;b.set(doc(db,'entries',id),{...body,viewers:Array.isArray(body.viewers)?body.viewers.map(normEmail):[]});});
+      await b.commit();
+    }
+    if(Array.isArray(data.people)&&data.people.length){
+      const merged=[...S.people];
+      data.people.forEach(p=>{const em=normEmail(p.email);if(em&&!merged.some(m=>m.email===em)) merged.push({name:p.name||'',email:em,group:p.group||''});});
+      await savePeople(merged);
+    }
+    toast(`Imported ${entries.length} ${entries.length===1?'entry':'entries'}.`);
+  }catch(e){toast(e.code?errMsg(e):(e.message||'Import failed.'));}
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',e=>{
+  const el=e.target.closest('button');
+  if(!el) return;
+  const act=el.dataset.action;
+  if(act==='signin'){signIn();return;}
+  if(act==='signout'){stopListeners();signOut(auth);return;}
+  if(act==='endpreview'){S.preview=null;render();return;}
+  if(act==='backup'){backup();return;}
+  if(el.dataset.preview){S.preview=el.dataset.preview;location.hash='#overview';render();return;}
+  if(el.dataset.removePerson){removePerson(el,el.dataset.removePerson);return;}
+  if(!el.closest('#main')) return;
+  if(el.dataset.market){S.market=el.dataset.market;render();return;}
+  if(el.dataset.month!==undefined){
+    const n=Number(el.dataset.month);
+    S.month=n===0?firstOfMonth(new Date()):new Date(S.month.getFullYear(),S.month.getMonth()+n,1);
+    render();return;
+  }
+  if(el.dataset.dist&&!el.dataset.new){S.selDist=el.dataset.dist;render();return;}
+  if(el.dataset.open){
+    const [kind,id]=el.dataset.open.split(':');
+    const item=byId(id);
+    if(item) openForm(kind,item);
+    return;
+  }
+  if(el.dataset.new){
+    const kind=el.dataset.new, defaults={};
+    if(kind==='post'){defaults.date=el.dataset.date||todayISO();defaults.status='Idea';if(S.market!=='all') defaults.market=S.market;}
+    if(kind==='distributor'){defaults.status='Prospect';if(S.market!=='all') defaults.market=S.market;}
+    if(kind==='activity'){
+      defaults.distributorId=el.dataset.dist;defaults.date=todayISO();defaults.type='Meeting';
+      const d=byId(el.dataset.dist);defaults.viewers=d?[...(d.viewers||[])]:[];
+    }
+    openForm(kind,null,defaults);
+  }
+});
+document.addEventListener('submit',e=>{
+  if(e.target.id==='addPerson'){e.preventDefault();addPerson(e.target);}
+});
+document.addEventListener('change',e=>{
+  if(e.target.id==='importFile'&&e.target.files[0]){importFile(e.target.files[0]);e.target.value='';}
+});
+document.getElementById('dlg').addEventListener('click',e=>{if(e.target.id==='dlg') e.target.close();});
+
+/* ---------- boot ---------- */
+render();
+if(configured&&location.protocol!=='file:'){
+  onAuthStateChanged(auth,user=>{
+    if(user) startSession(user);
+    else{stopListeners();S.user=null;S.owner=false;S.entries=new Map();S.people=[];S.preview=null;S.status='signedout';render();}
+  });
+}
+
+</script>
+</body>
+</html>
