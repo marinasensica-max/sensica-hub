@@ -260,6 +260,45 @@ dialog::backdrop{background:rgba(40,20,30,.42)}
 .data-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}
 .data-tools p{flex-basis:100%;margin:0 0 4px;color:var(--muted);font-size:14px}
 .sharing-grid{display:grid;gap:24px;margin-top:26px}
+
+.soc-section{margin-top:30px}
+.soc-h{font-size:22px;margin-bottom:12px}
+.camp-list{display:grid;gap:18px}
+.camp{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--mc);border-radius:14px;padding:18px 22px}
+.camp-head{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.camp-head>div{margin-right:auto;min-width:0}
+.camp-meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:13px;margin-top:4px}
+.camp-goal{font-family:var(--serif);font-size:18px;line-height:1.45;margin:14px 0 4px}
+.camp-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 22px;margin-top:10px}
+.camp-cols h3{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--terra);margin:0 0 4px}
+.camp-cols p{margin:0;white-space:pre-line;font-size:14px}
+.camp-progress{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;font-size:13px;color:var(--muted)}
+.camp-progress .bar{flex:1;min-width:120px;max-width:260px;height:6px;border-radius:999px;background:var(--surface-2);overflow:hidden}
+.camp-progress .bar span{display:block;height:100%;background:var(--ok)}
+.camp-next{margin-top:12px;border-top:1px solid var(--line);padding-top:8px}
+.link-row{all:unset;cursor:pointer;display:flex;gap:12px;align-items:center;width:100%;padding:6px 0;font-size:14px}
+.link-row .when{width:54px;color:var(--muted);font-size:13px;flex:none}
+.link-row .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.link-row:hover .t{text-decoration:underline}
+.pipeline{display:grid;grid-template-columns:repeat(4,minmax(200px,1fr));gap:12px;overflow-x:auto;padding-bottom:4px}
+.stage{background:var(--surface-2);border-radius:12px;padding:10px;min-height:120px}
+.stage-head{display:flex;justify-content:space-between;align-items:center;padding:2px 4px 8px;font-size:14px}
+.stage-head span{color:var(--muted);font-size:13px}
+.stage-empty{color:var(--muted);font-size:13px;margin:6px 4px}
+.card-post{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:2px;width:100%;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--mc);border-radius:8px;padding:8px 10px;margin-bottom:8px}
+.card-post .t{font-size:14px;font-weight:500}
+.card-post .meta{font-size:12px;color:var(--muted)}
+.card-post:hover{border-color:var(--muted)}
+.ideas .idea{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}
+.ideas .idea:first-child{border-top:0}
+.idea-body{flex:1;min-width:0}
+.idea-body button.link{all:unset;cursor:pointer;font-weight:500}
+.idea-body button.link:hover{text-decoration:underline}
+.idea-body .meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:13px;margin-top:3px}
+.idea-body p{margin:6px 0 0;font-size:14px;white-space:pre-line;color:var(--muted)}
+.status.s-Planning{background:transparent;border:1px solid var(--terra);color:var(--terra)}
+.status.s-Live{background:var(--plum);color:var(--plum-ink)}
+.status.s-Done{background:transparent;border:1px solid var(--ok);color:var(--ok)}
 </style>
 
 </head>
@@ -270,6 +309,7 @@ dialog::backdrop{background:rgba(40,20,30,.42)}
     <nav class="tabs" aria-label="Sections">
       <a href="#overview" data-view="overview">Overview</a>
       <a href="#calendar" data-view="calendar">Calendar</a>
+      <a href="#social" data-view="social">Social</a>
       <a href="#markets" data-view="markets">Markets</a>
       <a href="#distributors" data-view="distributors">Distributors</a>
       <a href="#sharing" data-view="sharing" hidden>Sharing</a>
@@ -304,10 +344,12 @@ const POST_STATUS = ['Idea','Drafting','Ready','Scheduled','Posted'];
 const DIST_STATUS = ['Prospect','In talks','Onboarding','Active','Paused','Ended'];
 const ACT_TYPES = ['Meeting','Call','Materials sent','Order','Campaign','Event','Report received','Note'];
 const PRODUCTS = ['Sensifirm','Sensifirm Pro','Multi RF','Sensilift','Sensilight Pro','Sensilight Mini','Sensilight ICE','SensiSmooth','Brand','Other'];
-const VIEWS = ['overview','calendar','markets','distributors','sharing'];
+const VIEWS = ['overview','calendar','social','markets','distributors','sharing'];
+const CAMPAIGN_STATUS = ['Planning','Live','Paused','Done'];
 
 const marketOptions = () => markets().map(m => ({value:m.id,label:m.name}));
 const distOptions = () => ofKind('distributor').map(d => ({value:d.id,label:d.name}));
+const campaignOptions = () => ofKind('campaign').sort((a,b)=>String(a.name).localeCompare(String(b.name))).map(c => ({value:c.id,label:c.name}));
 
 const SPECS = {
   brand: { title:'Brand foundation', sections:[
@@ -349,9 +391,41 @@ const SPECS = {
       {key:'account',label:'Account',hint:'e.g. @sensica_italy'},
       {key:'format',label:'Format',type:'select',options:POST_FORMATS},
       {key:'product',label:'Product',type:'select',options:PRODUCTS,blank:'None'},
-      {key:'pillar',label:'Content pillar',wide:true},
-      {key:'caption',label:'Caption or brief',type:'textarea',wide:true,rows:4},
+      {key:'campaign',label:'Campaign',type:'select',options:campaignOptions,blank:'No campaign'},
+      {key:'pillar',label:'Content pillar'},
+    ]},
+    {legend:'Content', fields:[
+      {key:'onPostCopy',label:'Text on the visual',type:'textarea',wide:true,hint:'In the language of the market, e.g. native Italian for @sensica_italy.'},
+      {key:'caption',label:'Caption',type:'textarea',wide:true,rows:4},
+      {key:'visualBrief',label:'Image brief or prompt',type:'textarea',wide:true,rows:3},
       {key:'link',label:'Link to asset or live post',type:'url',wide:true},
+    ]}]},
+  campaign: { title:'Campaign', sections:[
+    {legend:'Campaign', fields:[
+      {key:'name',label:'Campaign name',required:true,wide:true},
+      {key:'market',label:'Market',type:'select',options:marketOptions,blank:'All markets'},
+      {key:'status',label:'Status',type:'select',options:CAMPAIGN_STATUS},
+      {key:'accounts',label:'Accounts',wide:true},
+      {key:'start',label:'Starts',type:'date'},
+      {key:'end',label:'Ends',type:'date'},
+    ]},
+    {legend:'Plan', fields:[
+      {key:'goal',label:'Goal',type:'textarea',wide:true,rows:2},
+      {key:'messages',label:'Key messages',type:'textarea',wide:true},
+      {key:'approach',label:'Content approach',type:'textarea',wide:true,hint:'Formats, mix of topics, how hard to sell.'},
+      {key:'visual',label:'Visual direction',type:'textarea',wide:true},
+      {key:'kpis',label:'What success looks like',type:'textarea',wide:true,rows:2},
+      {key:'notes',label:'Notes',type:'textarea',wide:true},
+    ]}]},
+  idea: { title:'Idea', sections:[
+    {legend:'Idea', fields:[
+      {key:'title',label:'Idea',required:true,wide:true},
+      {key:'market',label:'Market',type:'select',options:marketOptions,blank:'No market'},
+      {key:'campaign',label:'Campaign',type:'select',options:campaignOptions,blank:'No campaign'},
+      {key:'format',label:'Format',type:'select',options:POST_FORMATS,blank:'Not decided'},
+      {key:'product',label:'Product',type:'select',options:PRODUCTS,blank:'None'},
+      {key:'pillar',label:'Content pillar',wide:true},
+      {key:'notes',label:'Notes',type:'textarea',wide:true,rows:4},
     ]}]},
   distributor: { title:'Distributor', sections:[
     {legend:'Distributor', fields:[
@@ -544,7 +618,7 @@ function render(){
     main.innerHTML=`<div class="gate"><h1>Nothing shared yet</h1><p>Nothing in this hub has been shared with ${esc(S.user.email)} so far. If you expected to see something, check that you signed in with the email address you were invited with.</p></div>`;
     return;
   }
-  const views={overview:renderOverview,calendar:renderCalendar,markets:renderMarkets,distributors:renderDistributors,sharing:renderSharing};
+  const views={overview:renderOverview,calendar:renderCalendar,social:renderSocial,markets:renderMarkets,distributors:renderDistributors,sharing:renderSharing};
   main.innerHTML=top+views[S.view]();
 }
 
@@ -761,6 +835,79 @@ function renderDistributors(){
     <div class="dist"><div class="d-list">${list}</div>${detail}</div>`;
 }
 
+
+function campaignName(id){const c=byId(id);return c&&c.kind==='campaign'?c.name:'';}
+function dateRange(a,b){
+  if(a&&b) return `${fmt(a,{day:'numeric',month:'short'})} to ${fmt(b,{day:'numeric',month:'short',year:'numeric'})}`;
+  if(b) return `Until ${fmt(b,{day:'numeric',month:'short',year:'numeric'})}`;
+  if(a) return `From ${fmt(a,{day:'numeric',month:'short',year:'numeric'})}`;
+  return 'No dates set';
+}
+function renderSocial(){
+  const se=canWrite(), t=todayISO(), end=iso(addDays(new Date(),30));
+  const inMk=x=>S.market==='all'||!x.market||x.market===S.market;
+  const camps=ofKind('campaign').filter(inMk).sort((a,b)=>{
+    const ra=a.status==='Done'?1:0, rb=b.status==='Done'?1:0;
+    return ra-rb||String(a.end||'9').localeCompare(String(b.end||'9'));
+  });
+  const posts=ofKind('post');
+  const campCards=camps.length?camps.map(c=>{
+    const cp=posts.filter(p=>p.campaign===c.id).sort((a,b)=>a.date.localeCompare(b.date));
+    const posted=cp.filter(p=>p.status==='Posted').length;
+    const next=cp.filter(p=>p.date>=t&&p.status!=='Posted').slice(0,3);
+    const pct=cp.length?Math.round(posted/cp.length*100):0;
+    return `<article class="camp" style="--mc:${c.market?marketColor(c.market):'var(--terra)'}">
+      <div class="camp-head">
+        <div><h2>${esc(c.name)}</h2><div class="camp-meta"><span class="dot"></span>${esc(c.market?marketName(c.market,c.marketName):'All markets')}${c.accounts?`<span>${esc(c.accounts)}</span>`:''}<span>${esc(dateRange(c.start,c.end))}</span></div></div>
+        <span class="status s-${slug(c.status||'Planning')}">${esc(c.status||'Planning')}</span>${shareTag(c)}
+        ${se?`<button class="btn small" data-open="campaign:${esc(c.id)}">Edit</button>`:`<button class="btn small" data-open="campaign:${esc(c.id)}">Details</button>`}
+      </div>
+      ${c.goal?`<p class="camp-goal">${esc(c.goal)}</p>`:''}
+      <div class="camp-cols">
+        ${c.approach?`<div><h3>Content approach</h3><p>${esc(c.approach)}</p></div>`:''}
+        ${c.visual?`<div><h3>Visual direction</h3><p>${esc(c.visual)}</p></div>`:''}
+        ${c.messages?`<div><h3>Key messages</h3><p>${esc(c.messages)}</p></div>`:''}
+      </div>
+      <div class="camp-progress">
+        <div class="bar" role="img" aria-label="${posted} of ${cp.length} posts published"><span style="width:${pct}%"></span></div>
+        <span>${cp.length?`${posted} of ${cp.length} posts published`:'No posts linked yet'}</span>
+        ${se?`<button class="btn small primary" data-new="post" data-campaign="${esc(c.id)}">Add post</button>`:''}
+      </div>
+      ${next.length?`<div class="camp-next">${next.map(p=>`<button class="link-row" data-open="post:${esc(p.id)}"><span class="when">${esc(fmt(p.date,{day:'numeric',month:'short'}))}</span><span class="t">${esc(p.title)}</span><span class="status s-${slug(p.status||'Idea')}">${esc(p.status||'Idea')}</span></button>`).join('')}</div>`:''}
+    </article>`;}).join(''):`<p class="empty">No campaigns yet.${se?' Add one for each launch or push, then link posts to it.':''}</p>`;
+
+  const stages=['Idea','Drafting','Ready','Scheduled'];
+  const upcoming=posts.filter(inFilter).filter(p=>p.date>=t&&p.date<=end&&p.status!=='Posted');
+  const pipeline=stages.map(st=>{
+    const list=upcoming.filter(p=>(p.status||'Idea')===st).sort((a,b)=>a.date.localeCompare(b.date));
+    return `<div class="stage"><div class="stage-head"><b>${st}</b><span>${list.length}</span></div>
+      ${list.length?list.map(p=>`<button class="card-post" data-open="post:${esc(p.id)}" style="--mc:${marketColor(p.market)}">
+        <span class="t">${esc(p.title)}</span>
+        <span class="meta">${esc(fmt(p.date,{weekday:'short',day:'numeric',month:'short'}))}${p.format?`, ${esc(p.format)}`:''}</span>
+        <span class="meta">${esc(marketName(p.market,p.marketName))}${p.campaign&&campaignName(p.campaign)?`, ${esc(campaignName(p.campaign))}`:''}</span>
+      </button>`).join(''):'<p class="stage-empty">Nothing here</p>'}
+    </div>`;}).join('');
+
+  const ideas=ofKind('idea').filter(inFilter).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+  const ideaList=ideas.length?ideas.map(i=>`
+    <div class="idea" style="--mc:${marketColor(i.market)}">
+      <div class="idea-body">
+        <button class="link" data-open="idea:${esc(i.id)}">${esc(i.title)}</button>
+        <div class="meta"><span class="dot"></span>${esc(marketName(i.market,i.marketName))}${i.format?`<span>${esc(i.format)}</span>`:''}${i.product?`<span>${esc(i.product)}</span>`:''}${i.campaign&&campaignName(i.campaign)?`<span>${esc(campaignName(i.campaign))}</span>`:''}${shareTag(i)}</div>
+        ${i.notes?`<p>${esc(i.notes)}</p>`:''}
+      </div>
+      ${se?`<button class="btn small" data-schedule="${esc(i.id)}">Put on calendar</button>`:''}
+    </div>`).join(''):`<p class="empty">No ideas saved.${se?' Jot them down here and put them on the calendar when they’re ready.':''}</p>`;
+
+  return `
+    <h1>Social planning</h1>
+    <p class="lede">Campaigns set the direction, ideas wait in the backlog, and the pipeline shows what has to be made for the next 30 days.</p>
+    <div class="toolbar">${marketPills()}<span class="grow"></span>${se?'<button class="btn" data-new="idea">Add idea</button> <button class="btn primary" data-new="campaign">Add campaign</button>':''}</div>
+    <section class="soc-section"><h2 class="soc-h">Campaigns</h2><div class="camp-list">${campCards}</div></section>
+    <section class="soc-section"><h2 class="soc-h">Pipeline, next 30 days</h2><div class="pipeline">${pipeline}</div></section>
+    <section class="soc-section"><h2 class="soc-h">Ideas backlog</h2><div class="ideas panel">${ideaList}</div></section>`;
+}
+
 function renderSharing(){
   const all=[...S.entries.values()];
   const groups=[...new Set(S.people.map(p=>p.group).filter(Boolean))].sort();
@@ -903,6 +1050,7 @@ function openForm(kind,item,defaults={}){
     const btn=form.querySelector('[type=submit]');btn.disabled=true;btn.textContent='Saving…';
     try{
       await saveEntry(kind,id,values,chosen);
+      if(kind==='post'&&isNew&&data._fromIdea){try{await deleteEntries([data._fromIdea]);}catch(e){}}
       if(kind==='distributor'&&form.elements._applyActs&&form.elements._applyActs.checked){
         const actIds=[...S.entries.values()].filter(a=>a.kind==='activity'&&a.distributorId===id).map(a=>a.id);
         if(actIds.length) await setViewers(actIds,chosen);
@@ -990,6 +1138,11 @@ document.addEventListener('click',e=>{
     render();return;
   }
   if(el.dataset.dist&&!el.dataset.new){S.selDist=el.dataset.dist;render();return;}
+  if(el.dataset.schedule){
+    const i=byId(el.dataset.schedule);
+    if(i) openForm('post',null,{title:i.title,market:i.market||'',campaign:i.campaign||'',format:i.format||'Static post',product:i.product||'',pillar:i.pillar||'',caption:i.notes||'',date:todayISO(),status:'Drafting',viewers:[...(i.viewers||[])],_fromIdea:i.id});
+    return;
+  }
   if(el.dataset.open){
     const [kind,id]=el.dataset.open.split(':');
     const item=byId(id);
@@ -999,6 +1152,9 @@ document.addEventListener('click',e=>{
   if(el.dataset.new){
     const kind=el.dataset.new, defaults={};
     if(kind==='post'){defaults.date=el.dataset.date||todayISO();defaults.status='Idea';if(S.market!=='all') defaults.market=S.market;}
+    if(kind==='post'&&el.dataset.campaign){const c=byId(el.dataset.campaign);defaults.campaign=el.dataset.campaign;if(c){if(c.market) defaults.market=c.market;if(c.accounts&&!c.accounts.includes(',')) defaults.account=c.accounts;defaults.viewers=[...(c.viewers||[])];}}
+    if(kind==='campaign'){defaults.status='Planning';if(S.market!=='all') defaults.market=S.market;}
+    if(kind==='idea'&&S.market!=='all') defaults.market=S.market;
     if(kind==='distributor'){defaults.status='Prospect';if(S.market!=='all') defaults.market=S.market;}
     if(kind==='activity'){
       defaults.distributorId=el.dataset.dist;defaults.date=todayISO();defaults.type='Meeting';
