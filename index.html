@@ -299,6 +299,22 @@ dialog::backdrop{background:rgba(40,20,30,.42)}
 .status.s-Planning{background:transparent;border:1px solid var(--terra);color:var(--terra)}
 .status.s-Live{background:var(--plum);color:var(--plum-ink)}
 .status.s-Done{background:transparent;border:1px solid var(--ok);color:var(--ok)}
+
+.acc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr));gap:14px}
+.acc{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--mc);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.acc-head{display:flex;align-items:center;gap:8px}
+.acc-head .plat{font-size:12px;color:var(--muted);margin-right:auto}
+.acc .handle{font-family:var(--serif);font-size:21px;font-weight:500;margin:2px 0 0;overflow-wrap:anywhere}
+.acc .handle a{color:inherit;text-decoration:none;border-bottom:1px solid var(--line)}
+.acc .handle a:hover{border-color:var(--terra);color:var(--terra)}
+.acc-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:13px}
+.acc-purpose{margin:4px 0 0;font-size:14px;white-space:pre-line}
+.acc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 2px;padding:10px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.acc-stats dt{font-size:12px;color:var(--muted)}
+.acc-stats dd{margin:2px 0 0;font-weight:600;font-size:15px}
+.acc-stats dd small{display:block;font-weight:400;font-size:11px;color:var(--muted)}
+.acc-stats .na{font-weight:400;font-size:13px;color:var(--muted)}
+.acc-foot{display:flex;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
 </style>
 
 </head>
@@ -346,6 +362,8 @@ const ACT_TYPES = ['Meeting','Call','Materials sent','Order','Campaign','Event',
 const PRODUCTS = ['Sensifirm','Sensifirm Pro','Multi RF','Sensilift','Sensilight Pro','Sensilight Mini','Sensilight ICE','SensiSmooth','Brand','Other'];
 const VIEWS = ['overview','calendar','social','markets','distributors','sharing'];
 const CAMPAIGN_STATUS = ['Planning','Live','Paused','Done'];
+const PLATFORMS = ['Instagram','TikTok','Facebook','YouTube','Pinterest','LinkedIn','X','Other'];
+const accountOptions = () => ofKind('account').sort((a,b)=>String(a.handle).localeCompare(String(b.handle))).map(a => ({value:a.handle,label:`${a.handle} (${a.platform||'Instagram'})`}));
 
 const marketOptions = () => markets().map(m => ({value:m.id,label:m.name}));
 const distOptions = () => ofKind('distributor').map(d => ({value:d.id,label:d.name}));
@@ -388,7 +406,7 @@ const SPECS = {
       {key:'date',label:'Publish date',type:'date',required:true},
       {key:'status',label:'Status',type:'select',options:POST_STATUS},
       {key:'market',label:'Market',type:'select',options:marketOptions,blank:'No market'},
-      {key:'account',label:'Account',hint:'e.g. @sensica_italy'},
+      {key:'account',label:'Account',type:'select',options:accountOptions,blank:'No account'},
       {key:'format',label:'Format',type:'select',options:POST_FORMATS},
       {key:'product',label:'Product',type:'select',options:PRODUCTS,blank:'None'},
       {key:'campaign',label:'Campaign',type:'select',options:campaignOptions,blank:'No campaign'},
@@ -399,6 +417,22 @@ const SPECS = {
       {key:'caption',label:'Caption',type:'textarea',wide:true,rows:4},
       {key:'visualBrief',label:'Image brief or prompt',type:'textarea',wide:true,rows:3},
       {key:'link',label:'Link to asset or live post',type:'url',wide:true},
+    ]}]},
+  account: { title:'Account', sections:[
+    {legend:'Account', fields:[
+      {key:'handle',label:'Handle',required:true,hint:'e.g. @sensica_de'},
+      {key:'platform',label:'Platform',type:'select',options:PLATFORMS},
+      {key:'market',label:'Market',type:'select',options:marketOptions,blank:'All markets'},
+      {key:'language',label:'Language'},
+      {key:'url',label:'Profile link',type:'url',wide:true},
+      {key:'purpose',label:'Role of this account',type:'textarea',wide:true,rows:2},
+    ]},
+    {legend:'Tracking', fields:[
+      {key:'followers',label:'Followers',type:'number'},
+      {key:'followersDate',label:'Follower count as of',type:'date'},
+      {key:'cadence',label:'Posting cadence'},
+      {key:'managedBy',label:'Managed by'},
+      {key:'notes',label:'Notes',type:'textarea',wide:true},
     ]}]},
   campaign: { title:'Campaign', sections:[
     {legend:'Campaign', fields:[
@@ -843,6 +877,42 @@ function dateRange(a,b){
   if(a) return `From ${fmt(a,{day:'numeric',month:'short',year:'numeric'})}`;
   return 'No dates set';
 }
+
+function normHandle(h){return String(h||'').trim().toLowerCase();}
+function renderAccounts(se,t){
+  const inMk=x=>S.market==='all'||!x.market||x.market===S.market;
+  const accs=ofKind('account').filter(inMk).sort((a,b)=>{
+    const ma=markets().findIndex(m=>m.id===a.market), mb=markets().findIndex(m=>m.id===b.market);
+    return (ma-mb)||String(a.handle).localeCompare(String(b.handle));
+  });
+  if(!accs.length) return `<p class="empty">No accounts yet.${se?' Add each of Sensica’s social accounts to see them side by side.':''}</p>`;
+  const end=iso(addDays(new Date(),30));
+  const posts=ofKind('post');
+  return `<div class="acc-grid">${accs.map(a=>{
+    const mine=posts.filter(p=>normHandle(p.account)===normHandle(a.handle));
+    const last=mine.filter(p=>p.status==='Posted'&&p.date<=t).sort((x,y)=>y.date.localeCompare(x.date))[0];
+    const upcoming=mine.filter(p=>p.date>=t&&p.date<=end&&p.status!=='Posted').sort((x,y)=>x.date.localeCompare(y.date));
+    const next=upcoming[0];
+    const followers=a.followers!==undefined&&a.followers!==''?Number(a.followers).toLocaleString('en-GB'):'';
+    const link=a.url&&/^https?:\/\//i.test(a.url)?a.url:'';
+    return `<article class="acc" style="--mc:${a.market?marketColor(a.market):'var(--plum)'}">
+      <div class="acc-head">
+        <span class="plat">${esc(a.platform||'Instagram')}</span>${shareTag(a)}
+        ${se?`<button class="btn small" data-open="account:${esc(a.id)}">Edit</button>`:`<button class="btn small" data-open="account:${esc(a.id)}">Details</button>`}
+      </div>
+      <h3 class="handle">${link?`<a href="${esc(link)}" target="_blank" rel="noopener noreferrer">${esc(a.handle)}</a>`:esc(a.handle)}</h3>
+      <div class="acc-meta"><span class="dot"></span>${esc(a.market?marketName(a.market,a.marketName):'All markets')}${a.language?`<span>${esc(a.language)}</span>`:''}</div>
+      ${a.purpose?`<p class="acc-purpose">${esc(a.purpose)}</p>`:''}
+      <dl class="acc-stats">
+        <div><dt>Followers</dt><dd>${followers?`${esc(followers)}${a.followersDate?`<small>as of ${esc(fmt(a.followersDate))}</small>`:''}`:'<span class="na">Not tracked</span>'}</dd></div>
+        <div><dt>Last posted</dt><dd>${last?esc(fmt(last.date)):'<span class="na">None logged</span>'}</dd></div>
+        <div><dt>Next 30 days</dt><dd>${upcoming.length} planned</dd></div>
+      </dl>
+      ${next?`<button class="link-row" data-open="post:${esc(next.id)}"><span class="when">${esc(fmt(next.date))}</span><span class="t">Next: ${esc(next.title)}</span><span class="status s-${slug(next.status||'Idea')}">${esc(next.status||'Idea')}</span></button>`:''}
+      ${a.cadence||a.managedBy?`<div class="acc-foot">${a.cadence?`<span>${esc(a.cadence)}</span>`:''}${a.managedBy?`<span>Managed by ${esc(a.managedBy)}</span>`:''}</div>`:''}
+    </article>`;}).join('')}</div>`;
+}
+
 function renderSocial(){
   const se=canWrite(), t=todayISO(), end=iso(addDays(new Date(),30));
   const inMk=x=>S.market==='all'||!x.market||x.market===S.market;
@@ -901,8 +971,9 @@ function renderSocial(){
 
   return `
     <h1>Social planning</h1>
-    <p class="lede">Campaigns set the direction, ideas wait in the backlog, and the pipeline shows what has to be made for the next 30 days.</p>
-    <div class="toolbar">${marketPills()}<span class="grow"></span>${se?'<button class="btn" data-new="idea">Add idea</button> <button class="btn primary" data-new="campaign">Add campaign</button>':''}</div>
+    <p class="lede">Every Sensica account side by side, the campaigns that set the direction, what has to be made in the next 30 days, and ideas waiting in the backlog.</p>
+    <div class="toolbar">${marketPills()}<span class="grow"></span>${se?'<button class="btn" data-new="account">Add account</button> <button class="btn" data-new="idea">Add idea</button> <button class="btn primary" data-new="campaign">Add campaign</button>':''}</div>
+    <section class="soc-section"><h2 class="soc-h">Accounts</h2>${renderAccounts(se,t)}</section>
     <section class="soc-section"><h2 class="soc-h">Campaigns</h2><div class="camp-list">${campCards}</div></section>
     <section class="soc-section"><h2 class="soc-h">Pipeline, next 30 days</h2><div class="pipeline">${pipeline}</div></section>
     <section class="soc-section"><h2 class="soc-h">Ideas backlog</h2><div class="ideas panel">${ideaList}</div></section>`;
@@ -957,7 +1028,8 @@ function fieldHTML(f,val,ro){
   if(f.type==='textarea') input=`<textarea id="${id}" name="${f.key}" rows="${f.rows||3}"${req}${dis}>${esc(val)}</textarea>`;
   else if(f.type==='select'){
     const opts=typeof f.options==='function'?f.options():f.options;
-    input=`<select id="${id}" name="${f.key}"${req}${dis}>${f.blank!==undefined?`<option value="">${esc(f.blank)}</option>`:''}${opts.map(o=>{const v=typeof o==='string'?o:o.value,l=typeof o==='string'?o:o.label;return `<option value="${esc(v)}"${v===val?' selected':''}>${esc(l)}</option>`;}).join('')}</select>`;
+    const known=opts.some(o=>(typeof o==='string'?o:o.value)===val);
+    input=`<select id="${id}" name="${f.key}"${req}${dis}>${f.blank!==undefined?`<option value="">${esc(f.blank)}</option>`:''}${val&&!known?`<option value="${esc(val)}" selected>${esc(val)}</option>`:''}${opts.map(o=>{const v=typeof o==='string'?o:o.value,l=typeof o==='string'?o:o.label;return `<option value="${esc(v)}"${v===val?' selected':''}>${esc(l)}</option>`;}).join('')}</select>`;
   } else input=`<input id="${id}" type="${f.type||'text'}" name="${f.key}" value="${esc(val)}"${req}${dis}>`;
   return `<div class="field ${f.wide?'wide':''}"><label for="${id}">${esc(f.label)}${f.required&&!ro?' *':''}</label>${f.hint&&!ro?`<small>${esc(f.hint)}</small>`:''}${input}</div>`;
 }
@@ -1154,6 +1226,7 @@ document.addEventListener('click',e=>{
     if(kind==='post'){defaults.date=el.dataset.date||todayISO();defaults.status='Idea';if(S.market!=='all') defaults.market=S.market;}
     if(kind==='post'&&el.dataset.campaign){const c=byId(el.dataset.campaign);defaults.campaign=el.dataset.campaign;if(c){if(c.market) defaults.market=c.market;if(c.accounts&&!c.accounts.includes(',')) defaults.account=c.accounts;defaults.viewers=[...(c.viewers||[])];}}
     if(kind==='campaign'){defaults.status='Planning';if(S.market!=='all') defaults.market=S.market;}
+    if(kind==='account'){defaults.platform='Instagram';if(S.market!=='all') defaults.market=S.market;}
     if(kind==='idea'&&S.market!=='all') defaults.market=S.market;
     if(kind==='distributor'){defaults.status='Prospect';if(S.market!=='all') defaults.market=S.market;}
     if(kind==='activity'){
